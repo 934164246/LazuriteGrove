@@ -1,9 +1,8 @@
 server:
   port: 9091
-
 spring:
   application:
-    name: lazurite-grove-back
+    name: lazurite-grove-front
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
@@ -35,9 +34,22 @@ spring:
         enabled: true
         login-username: admin
         login-password: 123456
-
-
-
+  redis:
+    database: 0
+    host: 192.168.251.128
+    password: liukaiying1314
+    jedis:
+      pool:
+        max-active: 8
+        max-wait: -1
+        max-idle: 8
+  mvc:
+    servlet:
+      load-on-startup: 1
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.251.128:8848
 mybatis-plus:
   mapper-locations: classpath*:/mapper/*.xml
   type-aliases-package: com.rurigokou.back.entity

@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: lazurite-grove-back
+  cloud:
+    nacos:
+      config:
+        server-addr: 192.168.251.128:8848
+        namespace: 07447d1c-dd10-47d9-85b4-7ad04d7e1f14
+        file-extension: yml
+        refresh-enabled: true
