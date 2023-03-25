@@ -1,0 +1,12 @@
+server:
+  port: 9092
+spring:
+  application:
+    name: lazurite-grove-plugin
+  mvc:
+    servlet:
+      load-on-startup: 1
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.251.128:8848

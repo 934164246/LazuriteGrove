@@ -10,9 +10,11 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>lazurite-grove-plugin</module>
         <module>lazurite-grove-common</module>
         <module>lazurite-grove-back</module>
         <module>lazurite-grove-front</module>
+        <module>lazurite-grove-gateway</module>
     </modules>
 
     <properties>
@@ -25,6 +27,8 @@
         <druid>1.2.15</druid>
         <mybatis-plus>3.5.0</mybatis-plus>
         <mysql>8.0.30</mysql>
+        <lombok>1.18.24</lombok>
+        <fastjson>2.0.20</fastjson>
     </properties>
 
     <dependencyManagement>
@@ -69,6 +73,18 @@
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
                 <version>${mysql}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

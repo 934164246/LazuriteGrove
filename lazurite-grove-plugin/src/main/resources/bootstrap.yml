@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: lazurite-grove-plugin
+  cloud:
+    nacos:
+      config:
+        server-addr: 192.168.251.128:8848
+        namespace: 143361ca-6285-4d4d-b730-a3f8b5822128
+        file-extension: yml
+        extension-configs:
+          - data-id: oss.yml
+            group: DEFAULT_GROUP
+            refresh: true

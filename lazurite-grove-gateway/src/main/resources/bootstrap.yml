@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: lazurite-grove-gateway
+  cloud:
+    nacos:
+      config:
+        server-addr: 192.168.251.128:8848
+        namespace: ab9035a0-c3df-454d-bea2-ae76a5d15318
+        file-extension: yml

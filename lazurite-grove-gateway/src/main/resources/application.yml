@@ -1,0 +1,34 @@
+server:
+  port: 88
+spring:
+  application:
+    name: lazurite-grove-gateway
+  mvc:
+    servlet:
+      load-on-startup: 1
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.251.128:8848
+    gateway:
+      routes:
+        - id: plugin
+          uri: lb://lazurite-grove-plugin
+          predicates:
+            - Path=/api/plugin/**
+          filters:
+            - RewritePath=/api/plugin/?(?<segment>.*), /$\{segment}
+
+        - id: back
+          uri: lb://lazurite-grove-back
+          predicates:
+            - Path=/api/back/**
+          filters:
+            - RewritePath=/api/back/?(?<segment>.*), /$\{segment}
+
+        - id: front
+          uri: lb://lazurite-grove-front
+          predicates:
+            - Path=/api/front/**
+          filters:
+            - RewritePath=/api/front/?(?<segment>.*), /$\{segment}

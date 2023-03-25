@@ -39,3 +39,5 @@ build/
 /lazurite-grove-front/src/test/
 /lazurite-grove-common/src/test/
 /lazurite-grove-back/src/test/
+/lazurite-grove-plugin/src/test/
+/lazurite-grove-gateway/src/test/
