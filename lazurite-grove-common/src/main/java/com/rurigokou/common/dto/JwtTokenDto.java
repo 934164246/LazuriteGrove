@@ -2,6 +2,7 @@ package com.rurigokou.common.dto;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 import java.util.Date;
 
@@ -11,6 +12,7 @@ import java.util.Date;
  * @author gokoururi
  */
 @Data
+@Accessors(chain = true)
 @EqualsAndHashCode
 public class JwtTokenDto {
 
@@ -27,4 +29,6 @@ public class JwtTokenDto {
      * 签发时间
      */
     private Date iat;
+
+    private String userAgent;
 }

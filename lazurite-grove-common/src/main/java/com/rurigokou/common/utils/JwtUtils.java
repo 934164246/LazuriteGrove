@@ -88,6 +88,6 @@ public class JwtUtils {
         long time = iat.getTime();
         long current = System.currentTimeMillis();
 
-        return dto.getExp() * 60 + time < current;
+        return dto.getExp() * 60000 + time < current;
     }
 }

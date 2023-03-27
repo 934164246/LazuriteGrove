@@ -46,6 +46,10 @@ spring:
   mvc:
     servlet:
       load-on-startup: 1
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false
   cloud:
     nacos:
       discovery:
