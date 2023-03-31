@@ -16,7 +16,7 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode
 @Accessors(chain = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ResultVo<T> {
+public class ResultResponse<T> {
 
     /**
      * 状态码
@@ -43,11 +43,11 @@ public class ResultVo<T> {
      */
     private T data;
 
-    public ResultVo() {
+    public ResultResponse() {
 
     }
 
-    public ResultVo(ErrorCode errorCode) {
+    public ResultResponse(ErrorCode errorCode) {
         this.code = errorCode.getCode();
         this.message = errorCode.getDescription();
     }
@@ -59,8 +59,8 @@ public class ResultVo<T> {
      * @param <T>  T
      * @return resultVo
      */
-    public static <T> ResultVo<T> success(T data) {
-        return ResultVo.success(data, "操作成功");
+    public static <T> ResultResponse<T> success(T data) {
+        return ResultResponse.success(data, "操作成功");
     }
 
     /**
@@ -71,8 +71,8 @@ public class ResultVo<T> {
      * @param <T>     T
      * @return resultVo
      */
-    public static <T> ResultVo<T> success(T data, String message) {
-        ResultVo<T> resultVo = new ResultVo<>();
+    public static <T> ResultResponse<T> success(T data, String message) {
+        ResultResponse<T> resultVo = new ResultResponse<>();
         resultVo.code = 200;
         resultVo.data = data;
         resultVo.message = message != null ? message : resultVo.message;
@@ -86,8 +86,8 @@ public class ResultVo<T> {
      * @param error 错误提示信息
      * @return resultVo
      */
-    public static ResultVo<String> error(String error) {
-        ResultVo<String> resultVo = new ResultVo<>();
+    public static ResultResponse<String> error(String error) {
+        ResultResponse<String> resultVo = new ResultResponse<>();
         resultVo.code = 500;
         resultVo.message = error;
 
@@ -100,7 +100,7 @@ public class ResultVo<T> {
      * @param errorCode 枚举类型
      * @return ResultVo
      */
-    public static ResultVo<String> error(ErrorCode errorCode) {
-        return new ResultVo<>(errorCode);
+    public static ResultResponse<String> error(ErrorCode errorCode) {
+        return new ResultResponse<>(errorCode);
     }
 }

@@ -4,7 +4,7 @@ import com.aliyun.oss.OSS;
 import com.aliyun.oss.common.utils.BinaryUtil;
 import com.aliyun.oss.model.MatchMode;
 import com.aliyun.oss.model.PolicyConditions;
-import com.rurigokou.common.response.ResultVo;
+import com.rurigokou.common.response.ResultResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +22,7 @@ import java.util.Map;
  * @author gokoururi
  */
 @RestController
-@RequestMapping("oss")
+@RequestMapping("plugin/oss")
 public class OssController {
 
     private OSS oss;
@@ -48,7 +48,7 @@ public class OssController {
     }
 
     @GetMapping("policy")
-    public ResultVo<Map<String, String>> ossInfo() {
+    public ResultResponse<Map<String, String>> ossInfo() {
         String host = "https://" + bucket + "." + endPoint;
         String folder = folderPrefix + "/" + LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd")) + "/";
         String postPolicy;
@@ -59,7 +59,7 @@ public class OssController {
         try {
             long expireTime = 30L;
             expiredEndTime = System.currentTimeMillis() + expireTime * 1000;
-            Date expiration = new Date(expireTime);
+            Date expiration = new Date(expiredEndTime);
 
             PolicyConditions policyConditions = new PolicyConditions();
             policyConditions.addConditionItem(PolicyConditions.COND_CONTENT_LENGTH_RANGE, 0, 1048576000);
@@ -83,6 +83,6 @@ public class OssController {
         map.put("expire", String.valueOf(expiredEndTime / 1000));
 
 
-        return ResultVo.success(map);
+        return ResultResponse.success(map);
     }
 }

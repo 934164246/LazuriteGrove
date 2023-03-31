@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.rurigokou.common.annotation.NotControllerResponseAdvice;
+import com.rurigokou.common.dto.RuriPage;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -23,7 +24,7 @@ public class ControllerResponseAdvice implements ResponseBodyAdvice<Object> {
 
     @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
-        return !(returnType.getParameterType().isAssignableFrom(ResultVo.class) || returnType.hasMethodAnnotation(NotControllerResponseAdvice.class));
+        return !(returnType.getParameterType().isAssignableFrom(ResultResponse.class) || returnType.hasMethodAnnotation(NotControllerResponseAdvice.class));
     }
 
     @Override
@@ -31,14 +32,14 @@ public class ControllerResponseAdvice implements ResponseBodyAdvice<Object> {
         if (returnType.getGenericParameterType().equals(String.class)) {
             ObjectMapper objectMapper = new ObjectMapper();
             try {
-                return objectMapper.writeValueAsString(ResultVo.success(body));
+                return objectMapper.writeValueAsString(ResultResponse.success(body));
             } catch (JsonProcessingException e) {
                 throw new ClassCastException();
             }
         } else if (body instanceof IPage) {
-            return ResultVo.success(RuriPage.tranToPageVo((IPage<?>) body));
+            return ResultResponse.success(RuriPage.tranToPageVo((IPage<?>) body));
         }
 
-        return ResultVo.success(body);
+        return ResultResponse.success(body);
     }
 }

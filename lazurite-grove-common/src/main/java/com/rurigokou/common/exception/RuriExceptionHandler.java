@@ -1,6 +1,6 @@
 package com.rurigokou.common.exception;
 
-import com.rurigokou.common.response.ResultVo;
+import com.rurigokou.common.response.ResultResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -22,16 +22,16 @@ import java.util.Map;
 public class RuriExceptionHandler {
 
     @ExceptionHandler({RuriException.class})
-    public ResultVo<String> ruriException(HttpServletRequest request, RuriException exception) {
+    public ResultResponse<String> ruriException(HttpServletRequest request, RuriException exception) {
         log.warn(exception.toString() + "; " + request.getRequestURI());
 
-        return new ResultVo<String>(exception.getErrorCode())
+        return new ResultResponse<String>(exception.getErrorCode())
                 .setUri(request.getRequestURI())
                 .setError(exception.getMessage());
     }
 
     @ExceptionHandler({MethodArgumentNotValidException.class})
-    public ResultVo<String> methodArgumentNotValidException(HttpServletRequest request, MethodArgumentNotValidException exception) {
+    public ResultResponse<String> methodArgumentNotValidException(HttpServletRequest request, MethodArgumentNotValidException exception) {
         log.warn(exception.toString() + "; " + request.getRequestURI());
 
         Map<String, String> map = new HashMap<>(16);
@@ -39,26 +39,26 @@ public class RuriExceptionHandler {
             map.put(fieldError.getField(), fieldError.getDefaultMessage());
         }
 
-        return ResultVo.error(RuriErrorCodeEnum.VALID_EXCEPTION)
+        return ResultResponse.error(RuriErrorCodeEnum.VALID_EXCEPTION)
                 .setError(map)
                 .setUri(request.getRequestURI());
     }
 
     @ExceptionHandler({NoHandlerFoundException.class, HttpRequestMethodNotSupportedException.class, Exception.class})
-    public ResultVo<String> allException(HttpServletRequest request, Exception exception) {
+    public ResultResponse<String> allException(HttpServletRequest request, Exception exception) {
         log.warn(exception.toString() + "; uri:" + request.getRequestURI());
 
-        ResultVo<String> resultVo;
+        ResultResponse<String> resultResponse;
 
         if(exception instanceof NoHandlerFoundException) {
-            resultVo=new ResultVo<>(RuriErrorCodeEnum.NOT_FOUND_EXCEPTION);
+            resultResponse=new ResultResponse<>(RuriErrorCodeEnum.NOT_FOUND_EXCEPTION);
         } else if (exception instanceof HttpRequestMethodNotSupportedException) {
-            resultVo=ResultVo.error(RuriErrorCodeEnum.REQUEST_METHOD_NOT_SUPPORT_EXCEPTION);
+            resultResponse= ResultResponse.error(RuriErrorCodeEnum.REQUEST_METHOD_NOT_SUPPORT_EXCEPTION);
         } else {
-            resultVo=ResultVo.error(RuriErrorCodeEnum.UNKNOWN_EXCEPTION);
+            resultResponse= ResultResponse.error(RuriErrorCodeEnum.UNKNOWN_EXCEPTION);
         }
 
-        return resultVo
+        return resultResponse
                 .setUri(request.getRequestURI())
                 .setError(exception.getMessage());
     }

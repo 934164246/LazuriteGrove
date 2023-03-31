@@ -30,18 +30,18 @@ spring:
           predicates:
             - Path=/api/plugin/**
           filters:
-            - RewritePath=/api/plugin/?(?<segment>.*), /$\{segment}
+            - RewritePath=/api/?(?<segment>.*), /$\{segment}
 
         - id: back
           uri: lb://lazurite-grove-back
           predicates:
             - Path=/api/back/**
           filters:
-            - RewritePath=/api/back/?(?<segment>.*), /$\{segment}
+            - RewritePath=/api/?(?<segment>.*), /$\{segment}
 
         - id: front
           uri: lb://lazurite-grove-front
           predicates:
             - Path=/api/front/**
           filters:
-            - RewritePath=/api/front/?(?<segment>.*), /$\{segment}
+            - RewritePath=/api/?(?<segment>.*), /$\{segment}
