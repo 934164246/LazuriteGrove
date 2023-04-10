@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serializable;
 import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 /**
@@ -59,6 +61,7 @@ public class DictionaryTableEntity implements Serializable {
 	/**
 	 * 逻辑删除字段
 	 */
+	@JsonIgnore
 	@TableLogic(value = "1", delval = "0")
 	private Integer del;
 }

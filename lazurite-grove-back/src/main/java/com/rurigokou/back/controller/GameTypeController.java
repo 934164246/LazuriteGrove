@@ -3,6 +3,7 @@ package com.rurigokou.back.controller;
 import java.util.Arrays;
 import java.util.Map;
 
+import com.rurigokou.back.pagination.GameTypePage;
 import org.springframework.web.bind.annotation.*;
 
 import com.rurigokou.back.entity.GameTypeEntity;
@@ -26,8 +27,8 @@ public class GameTypeController {
     private GameTypeService gameTypeService;
 
     @PostMapping("/page")
-    public RuriPage list(@RequestBody Map<String, Object> params){
-        return gameTypeService.queryPage(params);
+    public RuriPage list(@RequestBody GameTypePage page){
+        return gameTypeService.queryPage(page);
     }
 
     @GetMapping("/info/{id}")

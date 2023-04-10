@@ -3,6 +3,7 @@ package com.rurigokou.back.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.rurigokou.back.dto.DictionaryKeyValueDto;
 import com.rurigokou.back.dto.DictionaryModelDto;
+import com.rurigokou.back.entity.UserEntity;
 import com.rurigokou.back.pagination.DictionaryTablePage;
 import com.rurigokou.common.dto.RuriPage;
 import com.rurigokou.back.entity.DictionaryTableEntity;

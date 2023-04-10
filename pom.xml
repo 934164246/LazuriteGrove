@@ -10,6 +10,7 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>lazurite-grove-admin</module>
         <module>lazurite-grove-plugin</module>
         <module>lazurite-grove-common</module>
         <module>lazurite-grove-back</module>

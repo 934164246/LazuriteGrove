@@ -1,11 +1,14 @@
 package com.rurigokou.back.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rurigokou.back.dto.DictionaryKeyDto;
 import com.rurigokou.back.dto.DictionaryKeyValueDto;
 import com.rurigokou.back.dto.DictionaryModelDto;
+import com.rurigokou.back.entity.UserEntity;
 import com.rurigokou.back.pagination.DictionaryTablePage;
 import com.rurigokou.common.dto.RuriPage;
+import com.rurigokou.common.pagination.RuriQuery;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -29,6 +32,7 @@ public class DictionaryTableServiceImpl extends ServiceImpl<DictionaryTableDao, 
     public List<DictionaryModelDto> modelList(DictionaryTablePage dictionaryTablePage) {
         QueryWrapper<DictionaryTableEntity> wrapper = new QueryWrapper<>();
         wrapper.in("level", 0, 1);
+        wrapper.like(StringUtils.hasLength(dictionaryTablePage.getName()), "name", dictionaryTablePage.getName());
 
         List<DictionaryTableEntity> records = this.list(wrapper);
 
@@ -51,11 +55,11 @@ public class DictionaryTableServiceImpl extends ServiceImpl<DictionaryTableDao, 
     @Override
     public RuriPage queryPage(DictionaryTablePage dictionaryTablePage) {
         QueryWrapper<DictionaryTableEntity> wrapper = new QueryWrapper<>();
-        wrapper.like(StringUtils.hasText(dictionaryTablePage.getName()), "name", dictionaryTablePage.getName());
-        wrapper.eq("parent_id", dictionaryTablePage.getParentId());
-        wrapper.eq("level", 2);
+        wrapper.like(StringUtils.hasText(dictionaryTablePage.getName()), "name", dictionaryTablePage.getName())
+                .eq("parent_id", dictionaryTablePage.getParentId())
+                .eq("level", 2);
 
-        Page<DictionaryTableEntity> page = this.page(new Page<>(dictionaryTablePage.getCurrent(), dictionaryTablePage.getSize()), wrapper);
+        IPage<DictionaryTableEntity> page = this.page(RuriQuery.getPage(dictionaryTablePage), wrapper);
 
         List<DictionaryKeyDto> keyDtoList = page.getRecords().stream()
                 .sorted(Comparator.comparingInt(DictionaryTableEntity::getSort))

@@ -9,7 +9,6 @@ import org.apache.ibatis.annotations.Mapper;
  * 
  * @author gokoururi
  * @email rurigokou934164246@gmail.com
- * @date 2023-03-29 00:50:48
  */
 @Mapper
 public interface DictionaryTableDao extends BaseMapper<DictionaryTableEntity> {

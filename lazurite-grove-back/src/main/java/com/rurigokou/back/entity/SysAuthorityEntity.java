@@ -1,6 +1,7 @@
 package com.rurigokou.back.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serializable;
@@ -69,6 +70,8 @@ public class SysAuthorityEntity implements Serializable {
 	/**
 	 * 逻辑删除字段
 	 */
+
+	@TableLogic(value = "1", delval = "0")
 	private Integer del;
 
 }

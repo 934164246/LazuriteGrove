@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rurigokou.back.dao.TypeGameRelationDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.rurigokou.back.entity.TypeGameRelationEntity" id="typeGameRelationMap">
+        <result property="gameid" column="gameId"/>
+        <result property="typeid" column="typeId"/>
+        <result property="del" column="del"/>
+    </resultMap>
+
+
+</mapper>
