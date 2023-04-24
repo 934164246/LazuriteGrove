@@ -24,7 +24,7 @@ public class ArticleContentEntity implements Serializable {
 	 * 文章id
 	 */
 	@TableId
-	private Integer articleid;
+	private Integer articleId;
 
 	/**
 	 * 文章内容

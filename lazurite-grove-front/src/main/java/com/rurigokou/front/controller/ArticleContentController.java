@@ -30,8 +30,8 @@ public class ArticleContentController {
         return articleContentService.queryPage(params);
     }
 
-    @GetMapping("/info/{articleid}")
-    public ArticleContentEntity info(@PathVariable("articleid") Integer articleid){
+    @GetMapping("/info/{articleId}")
+    public ArticleContentEntity info(@PathVariable("articleId") Integer articleid){
 		return articleContentService.getById(articleid);
     }
 

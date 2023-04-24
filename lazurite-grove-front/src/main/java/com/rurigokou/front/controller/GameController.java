@@ -25,4 +25,5 @@ public class GameController {
     @Resource(name = "gameService")
     private GameService gameService;
 
+
 }
