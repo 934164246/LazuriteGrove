@@ -42,7 +42,7 @@ public class JwtUtils {
 
             return JWT.create()
                     .withHeader(header)
-                    .withClaim(JwtConstant.UUID, tokenDto.getId())
+                    .withClaim(JwtConstant.ID, tokenDto.getId())
                     .withClaim(JwtConstant.USERNAME, tokenDto.getName())
                     .withIssuedAt(Date.from(iat.atZone(ZoneId.of("Asia/Shanghai")).toInstant()))
                     .withClaim(JwtConstant.TTL, tokenDto.getExp())
@@ -63,7 +63,7 @@ public class JwtUtils {
         JWTVerifier verifier = JWT.require(algorithm).build();
 
         DecodedJWT jwt = verifier.verify(token);
-        int uid = jwt.getClaim(JwtConstant.UUID).asInt();
+        int uid = jwt.getClaim(JwtConstant.ID).asInt();
         String name = jwt.getClaim(JwtConstant.USERNAME).asString();
         Date issuedAt = jwt.getIssuedAt();
         Long ttl = jwt.getClaim(JwtConstant.TTL).asLong();

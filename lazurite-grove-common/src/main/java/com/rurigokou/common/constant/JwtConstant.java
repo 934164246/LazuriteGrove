@@ -20,9 +20,11 @@ public class JwtConstant {
      */
     public static final String TOKEN_SECRET = "【「{(GokouRuriForever)}」】";
 
-    public static final String UUID = "uid";
+    public static final String ID = "id";
 
     public static final String USERNAME = "name";
 
     public static final String TTL="ttl";
+
+    public static final String NEW_TOKEN="New-Token";
 }

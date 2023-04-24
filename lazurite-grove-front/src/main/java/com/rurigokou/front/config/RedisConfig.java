@@ -1,5 +1,6 @@
 package com.rurigokou.front.config;
 
+import com.rurigokou.common.utils.RedisUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -33,5 +34,13 @@ public class RedisConfig {
         template.setHashValueSerializer(serializer);
         template.afterPropertiesSet();
         return template;
+    }
+
+    @Bean
+    public RedisUtils redisUtils(RedisTemplate<String, String> redisTemplate) {
+        RedisUtils redisUtils=new RedisUtils();
+        redisUtils.setRedisTemplate(redisTemplate);
+
+        return redisUtils;
     }
 }
