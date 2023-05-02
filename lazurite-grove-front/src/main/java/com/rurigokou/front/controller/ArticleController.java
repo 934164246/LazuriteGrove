@@ -1,13 +1,15 @@
 package com.rurigokou.front.controller;
 
-import java.util.Arrays;
-import java.util.Map;
+import java.util.List;
 
+import com.rurigokou.common.dto.JwtTokenDto;
+import com.rurigokou.common.utils.JwtUtils;
+import com.rurigokou.front.dto.ArticleDto;
+import com.rurigokou.front.dto.ArticleRankDto;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import com.rurigokou.front.entity.ArticleEntity;
 import com.rurigokou.front.service.ArticleService;
-import com.rurigokou.common.dto.RuriPage;
 
 import javax.annotation.Resource;
 
@@ -18,6 +20,7 @@ import javax.annotation.Resource;
  *
  * @author gokoururi
  */
+@Slf4j
 @RestController
 @RequestMapping("front/article")
 public class ArticleController {
@@ -25,24 +28,53 @@ public class ArticleController {
     @Resource(name = "articleService")
     private ArticleService articleService;
 
-    @PostMapping("/page")
-    public RuriPage list(@RequestBody Map<String, Object> params){
-        return articleService.queryPage(params);
+    @GetMapping("/top")
+    public List<ArticleRankDto> getTop() {
+        return articleService.getTop();
     }
 
-    @GetMapping("/info/{uid}")
-    public ArticleEntity info(@PathVariable("uid") String uid){
-		return articleService.getById(uid);
+    @GetMapping("/recent")
+    public List<ArticleRankDto> getRecent() {
+        return articleService.getRecent();
     }
 
-    @PostMapping("/saveOrUpdate")
-    public Boolean save(@RequestBody ArticleEntity article){
-		return articleService.saveOrUpdate(article);
+    @PostMapping("/save")
+    public Boolean saveAsNormal(@RequestBody ArticleDto dto, @RequestHeader("Authorization") String token) {
+        JwtTokenDto userInfo = JwtUtils.parseToken(token);
+
+        dto.setUserId(userInfo.getId());
+        dto.setStatus(1);
+
+        return articleService.save(dto);
     }
 
-    @PostMapping("/delete")
-    public Boolean delete(@RequestBody String[] uids){
-		return articleService.removeByIds(Arrays.asList(uids));
+    @PostMapping("/saveAsDraft")
+    public Boolean saveAsDraft(@RequestBody ArticleDto dto, @RequestHeader("Authorization") String token) {
+
+        JwtTokenDto userInfo = JwtUtils.parseToken(token);
+
+        dto.setUserId(userInfo.getId());
+        dto.setStatus(2);
+
+
+        return articleService.save(dto);
     }
 
+    @GetMapping("getDrafts")
+    public List<ArticleDto> getDraftsByUser(@RequestHeader("Authorization") String token) {
+        JwtTokenDto userInfo = JwtUtils.parseToken(token);
+
+        return articleService.getDrafts(userInfo.getId());
+    }
+
+    @GetMapping("getDraft/{uid}")
+    public ArticleDto getDraft(@PathVariable("uid") String uid) {
+
+        return articleService.getDraft(uid);
+    }
+
+    @PostMapping("deleteArticle/{uid}")
+    public Boolean deleteArticle(@PathVariable("uid") String uid) {
+        return articleService.deleteArticle(uid);
+    }
 }

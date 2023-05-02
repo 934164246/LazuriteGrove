@@ -3,6 +3,8 @@ package com.rurigokou.front.controller;
 import java.util.Arrays;
 import java.util.Map;
 
+import com.rurigokou.common.dto.JwtTokenDto;
+import com.rurigokou.common.utils.JwtUtils;
 import org.springframework.web.bind.annotation.*;
 
 import com.rurigokou.front.entity.ArticleContentEntity;
@@ -25,24 +27,22 @@ public class ArticleContentController {
     @Resource(name = "articleContentService")
     private ArticleContentService articleContentService;
 
-    @PostMapping("/page")
-    public RuriPage list(@RequestBody Map<String, Object> params){
-        return articleContentService.queryPage(params);
-    }
-
     @GetMapping("/info/{articleId}")
-    public ArticleContentEntity info(@PathVariable("articleId") Integer articleid){
-		return articleContentService.getById(articleid);
+    public ArticleContentEntity info(@PathVariable("articleId") String articleId){
+		return articleContentService.getById(articleId);
     }
 
     @PostMapping("/saveOrUpdate")
-    public Boolean save(@RequestBody ArticleContentEntity articleContent){
-		return articleContentService.saveOrUpdate(articleContent);
+    public Boolean save(@RequestBody ArticleContentEntity articleContent, @RequestHeader("Authorization") String token) {
+        JwtTokenDto dto = JwtUtils.parseToken(token);
+        Integer id = dto.getId();
+
+        return articleContentService.saveOrUpdate(articleContent);
     }
 
     @PostMapping("/delete")
-    public Boolean delete(@RequestBody Integer[] articleids){
-		return articleContentService.removeByIds(Arrays.asList(articleids));
+    public Boolean delete(@RequestBody Integer[] ids){
+		return articleContentService.removeByIds(Arrays.asList(ids));
     }
 
 }

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rurigokou.front.dao.ArticleDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.rurigokou.front.entity.ArticleEntity" id="articleMap">
+        <result property="uid" column="uid"/>
+        <result property="title" column="title"/>
+        <result property="userId" column="user_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="coverImg" column="cover_img"/>
+        <result property="readNum" column="read_num"/>
+        <result property="likeNum" column="like_num"/>
+        <result property="commentNum" column="comment_num"/>
+        <result property="status" column="status"/>
+        <result property="del" column="del"/>
+    </resultMap>
+
+    <resultMap id="articleRankMap" type="com.rurigokou.front.dto.ArticleRankDto">
+        <result property="uid" column="uid"/>
+        <result property="userId" column="user_id"/>
+        <result property="userName" column="name"/>
+        <result property="title" column="title"/>
+        <result property="date" column="release_time"/>
+        <result property="coverImg" column="cover_img"/>
+        <result property="readNum" column="read_num"/>
+        <result property="likeNum" column="like_num"/>
+        <result property="commentNum" column="comment_num"/>
+        <result property="userHeadImg" column="head_img"/>
+    </resultMap>
+
+    <select id="getArticle" resultMap="articleRankMap">
+        select uid, user_id, name, title, release_time, cover_img,read_num, like_num, comment_num, head_img
+        from article join user on article.user_id = user.id
+        where article.del=1
+          and user.del=1
+          and article.status=1
+    </select>
+</mapper>

@@ -1,6 +1,7 @@
 package com.rurigokou.front.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serializable;
@@ -12,11 +13,11 @@ import lombok.Data;
  * 
  * @author gokoururi
  * @email rurigokou934164246@gmail.com
- * @date 2023-04-24 14:52:57
  */
 @Data
 @TableName("article")
 public class ArticleEntity implements Serializable {
+
 	private static final long serialVersionUID = 1L;
 
 
@@ -27,19 +28,24 @@ public class ArticleEntity implements Serializable {
 	private String uid;
 
 	/**
-	 * 标题
-	 */
-	private String title;
-
-	/**
 	 * 创造者id
 	 */
 	private Integer userId;
 
 	/**
+	 * 标题
+	 */
+	private String title;
+
+	/**
 	 * 创造时间
 	 */
 	private Date createTime;
+
+	/**
+	 * 发布时间
+	 */
+	private Date releaseTime;
 
 	/**
 	 * 外部图片
@@ -69,6 +75,7 @@ public class ArticleEntity implements Serializable {
 	/**
 	 * 逻辑删除字段
 	 */
+	@TableLogic(value = "1", delval = "0")
 	private Integer del;
 
 }

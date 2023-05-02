@@ -9,37 +9,43 @@ import java.util.Date;
 import lombok.Data;
 
 /**
- * 文章内容表
+ * 公告表
  * 
  * @author gokoururi
  * @email rurigokou934164246@gmail.com
+ * @date 2023-04-24 14:52:57
  */
 @Data
-@TableName("article_content")
-public class ArticleContentEntity implements Serializable {
+@TableName("announcement")
+public class AnnouncementEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 
 	/**
-	 * 文章id
+	 * id
 	 */
 	@TableId
-	private String articleId;
+	private Integer id;
 
 	/**
-	 * 文章内容
+	 * 标题
+	 */
+	private String title;
+
+	/**
+	 * 内容
 	 */
 	private String content;
 
 	/**
-	 * 资源链接
+	 * 发布时间
 	 */
-	private String sourceLink;
+	private Date releaseTime;
 
 	/**
-	 * 获取方式
+	 * 状态
 	 */
-	private Integer accessMethod;
+	private Integer status;
 
 	/**
 	 * 逻辑删除字段
