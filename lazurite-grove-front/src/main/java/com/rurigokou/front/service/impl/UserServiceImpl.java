@@ -29,7 +29,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
     @Override
     public String login(String username, String password) {
         QueryWrapper<UserEntity> wrapper=new QueryWrapper<>();
-        wrapper.eq("name", username);
+        wrapper.eq("email", username);
 
         List<UserEntity> list = this.list(wrapper);
         if (CollectionUtils.isEmpty(list) || list.size() > 1) {
@@ -57,5 +57,34 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
         UserEntity entity = this.getById(id);
 
         return Objects.isNull(entity) ? new UserInfoDto() : UserInfoDto.toDto(entity);
+    }
+
+    @Override
+    public String register(String email, String password) {
+        QueryWrapper<UserEntity> wrapper=new QueryWrapper<>();
+        wrapper.eq("email", email);
+
+        UserEntity user = this.getOne(wrapper);
+
+        //判断是否存在
+        if (user != null) {
+            throw new RuriException(RuriErrorCodeEnum.EMAIL_REPEAT_EXCEPTION);
+        }
+
+        UserEntity entity=new UserEntity();
+        entity.setName("user");
+        entity.setEmail(email);
+        entity.setPassword(DigestUtils.md5DigestAsHex(password.getBytes()).toUpperCase());
+        entity.setHeadImg("https://gokoururi.oss-cn-shanghai.aliyuncs.com/img/2023/04/14/5b41253f5fb7442d8f44302397f75b96_head.jpg");
+
+        this.save(entity);
+
+        JwtTokenDto dto=new JwtTokenDto();
+        dto.setId(entity.getId());
+        dto.setName(entity.getName());
+        dto.setIat(new Date());
+        dto.setExp(60L);
+
+        return JwtUtils.generateToken(dto);
     }
 }

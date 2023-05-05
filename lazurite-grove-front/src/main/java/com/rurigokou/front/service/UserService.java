@@ -24,5 +24,7 @@ public interface UserService extends IService<UserEntity> {
     String login(String username, String password);
 
     UserInfoDto info(String id);
+
+    String register(String email, String password);
 }
 

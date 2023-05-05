@@ -45,7 +45,8 @@ public enum RuriErrorCodeEnum implements ErrorCode {
 
     //登录时候的问题
     NOT_LOGIN_EXCEPTION(10200, "用户未登录"),
-    ACCOUNT_PASSWORD_EXCEPTION(10201, "账号或密码错误");
+    ACCOUNT_PASSWORD_EXCEPTION(10201, "账号或密码错误"),
+    EMAIL_REPEAT_EXCEPTION(10202, "此邮箱已注册");
 
 
     private final Integer code;

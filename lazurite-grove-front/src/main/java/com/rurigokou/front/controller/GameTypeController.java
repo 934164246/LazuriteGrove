@@ -1,8 +1,10 @@
 package com.rurigokou.front.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
+import com.rurigokou.front.dto.KeyValueDto;
 import org.springframework.web.bind.annotation.*;
 
 import com.rurigokou.front.entity.GameTypeEntity;
@@ -19,30 +21,19 @@ import javax.annotation.Resource;
  * @author gokoururi
  */
 @RestController
-@RequestMapping("front/gametype")
+@RequestMapping("front/gameType")
 public class GameTypeController {
 
     @Resource(name = "gameTypeService")
     private GameTypeService gameTypeService;
 
-    @PostMapping("/page")
-    public RuriPage list(@RequestBody Map<String, Object> params){
-        return gameTypeService.queryPage(params);
+    @GetMapping("/all")
+    public List<KeyValueDto> getAll() {
+        return gameTypeService.getAll();
     }
 
-    @GetMapping("/info/{id}")
-    public GameTypeEntity info(@PathVariable("id") Integer id){
-		return gameTypeService.getById(id);
+    @GetMapping("/getInfo/{keyword}")
+    public KeyValueDto getByKeyword(@PathVariable("keyword") String keyword) {
+        return null;
     }
-
-    @PostMapping("/saveOrUpdate")
-    public Boolean save(@RequestBody GameTypeEntity gameType){
-		return gameTypeService.saveOrUpdate(gameType);
-    }
-
-    @PostMapping("/delete")
-    public Boolean delete(@RequestBody Integer[] ids){
-		return gameTypeService.removeByIds(Arrays.asList(ids));
-    }
-
 }

@@ -3,20 +3,18 @@ package com.rurigokou.front.service;
 import com.rurigokou.common.dto.RuriPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.rurigokou.front.dto.KeyValueDto;
-import com.rurigokou.front.entity.GameTypeEntity;
+import com.rurigokou.front.entity.DictionaryTableEntity;
 
 import java.util.List;
 import java.util.Map;
 
 /**
- * 游戏类型表
+ * 字典表
  *
  * @author gokoururi
  */
-public interface GameTypeService extends IService<GameTypeEntity> {
+public interface DictionaryTableService extends IService<DictionaryTableEntity> {
 
-    List<KeyValueDto> getAll();
-
-    GameTypeEntity getOneByKeyword(String keyword);
+    List<KeyValueDto> info(String keyword);
 }
 

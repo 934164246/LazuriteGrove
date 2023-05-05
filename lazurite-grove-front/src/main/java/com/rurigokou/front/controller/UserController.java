@@ -7,6 +7,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import com.rurigokou.front.dto.UserInfoDto;
 import com.rurigokou.front.dto.UserLoginDto;
+import com.rurigokou.front.dto.UserRegisterDto;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,4 +41,10 @@ public class UserController {
 
         return userService.info(id);
     }
+
+    @PostMapping("/register")
+    public String register(@Validated @RequestBody UserRegisterDto dto) {
+        return userService.register(dto.getEmail(), dto.getPassword());
+    }
+
 }
