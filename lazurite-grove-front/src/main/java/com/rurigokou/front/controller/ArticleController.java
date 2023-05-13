@@ -3,10 +3,14 @@ package com.rurigokou.front.controller;
 import java.util.List;
 
 import com.rurigokou.common.dto.JwtTokenDto;
+import com.rurigokou.common.dto.RuriPage;
 import com.rurigokou.common.utils.JwtUtils;
+import com.rurigokou.front.dto.ArticleDetailDto;
 import com.rurigokou.front.dto.ArticleDto;
 import com.rurigokou.front.dto.ArticleRankDto;
+import com.rurigokou.front.pagination.ArticlePage;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.rurigokou.front.service.ArticleService;
@@ -76,5 +80,19 @@ public class ArticleController {
     @PostMapping("deleteArticle/{uid}")
     public Boolean deleteArticle(@PathVariable("uid") String uid) {
         return articleService.deleteArticle(uid);
+    }
+
+    @GetMapping("info")
+    public RuriPage getInfo(@Validated @ModelAttribute ArticlePage page) {
+
+        return articleService.getList(page);
+    }
+
+    @GetMapping("detail/{id}")
+    public ArticleDetailDto articleDetail(@PathVariable("id") String id, @RequestHeader("Authorization") String token) {
+
+        JwtTokenDto dto = JwtUtils.parseToken(token);
+
+        return articleService.getDetail(id, dto.getId());
     }
 }

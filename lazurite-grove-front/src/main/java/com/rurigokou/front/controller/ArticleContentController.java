@@ -21,11 +21,18 @@ import javax.annotation.Resource;
  * @author gokoururi
  */
 @RestController
-@RequestMapping("front/articlecontent")
+@RequestMapping("front/articleContent")
 public class ArticleContentController {
 
     @Resource(name = "articleContentService")
     private ArticleContentService articleContentService;
+
+    @GetMapping("/getSourceLink")
+    public String getSourceLink(@RequestParam("articleId") String articleId, @RequestHeader("Authorization") String token) {
+        JwtTokenDto dto = JwtUtils.parseToken(token);
+
+        return articleContentService.getSourceLink(articleId, dto.getId());
+    }
 
     @GetMapping("/info/{articleId}")
     public ArticleContentEntity info(@PathVariable("articleId") String articleId){

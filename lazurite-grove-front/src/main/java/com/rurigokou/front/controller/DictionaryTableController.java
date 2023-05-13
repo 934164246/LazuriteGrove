@@ -30,6 +30,6 @@ public class DictionaryTableController {
     @GetMapping("info/{keyword}")
     public List<KeyValueDto> getByKeyword(@PathVariable("keyword") String keyword) {
 
-        return null;
+        return dictionaryTableService.info(keyword);
     }
 }

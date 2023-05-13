@@ -32,6 +32,8 @@ public class ArticleDto {
 
     private String sourceLink;
 
+    private Integer accessMethod;
+
     private Integer status;
 
     /**
@@ -65,6 +67,7 @@ public class ArticleDto {
         entity.setArticleId(dto.getUid());
         entity.setContent(dto.getContent());
         entity.setSourceLink(dto.getSourceLink());
+        entity.setAccessMethod(dto.getAccessMethod());
 
         return entity;
     }

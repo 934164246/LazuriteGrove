@@ -2,6 +2,8 @@ package com.rurigokou.front.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.rurigokou.common.dto.RuriPage;
+import com.rurigokou.common.exception.RuriErrorCodeEnum;
+import com.rurigokou.common.exception.RuriException;
 import com.rurigokou.front.dto.KeyValueDto;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +27,8 @@ public class DictionaryTableServiceImpl extends ServiceImpl<DictionaryTableDao, 
     @Override
     public List<KeyValueDto> info(String keyword) {
         QueryWrapper<DictionaryTableEntity> wrapper=new QueryWrapper<>();
-        wrapper.eq("parent_id", keyword);
+        wrapper.likeRight("keyword", keyword)
+                .ne("keyword", keyword);
 
         List<DictionaryTableEntity> list = this.list(wrapper);
 

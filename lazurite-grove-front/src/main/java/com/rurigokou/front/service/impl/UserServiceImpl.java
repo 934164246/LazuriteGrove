@@ -8,6 +8,8 @@ import com.rurigokou.common.exception.RuriErrorCodeEnum;
 import com.rurigokou.common.exception.RuriException;
 import com.rurigokou.common.utils.JwtUtils;
 import com.rurigokou.front.dto.UserInfoDto;
+import org.checkerframework.checker.units.qual.A;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -25,6 +27,9 @@ import org.springframework.util.DigestUtils;
 */
 @Service("userService")
 public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements UserService {
+
+    @Autowired
+    private UserDao userDao;
 
     @Override
     public String login(String username, String password) {
@@ -86,5 +91,15 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
         dto.setExp(60L);
 
         return JwtUtils.generateToken(dto);
+    }
+
+    @Override
+    public Boolean fanCountIncrease(Integer id, Integer count) {
+        return userDao.updateFanNum(id, count);
+    }
+
+    @Override
+    public Boolean followCountChange(Integer id, Integer count) {
+        return userDao.updateFollowNum(id, count);
     }
 }

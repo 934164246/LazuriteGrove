@@ -14,5 +14,9 @@ import java.util.Map;
 public interface ArticleContentService extends IService<ArticleContentEntity> {
 
     RuriPage queryPage(Map<String, Object> params);
+
+    boolean checkUserHasQualification(String articleId, Integer userId);
+
+    String getSourceLink(String articleId, Integer userId);
 }
 

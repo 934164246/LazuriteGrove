@@ -29,6 +29,17 @@
         <result property="commentNum" column="comment_num"/>
         <result property="userHeadImg" column="head_img"/>
     </resultMap>
+    <update id="updateReadNum">
+        update article set read_num=read_num+1 where uid=#{id};
+    </update>
+
+    <update id="updateLikeNum">
+        update article set like_num=like_num+1 where uid=#{id};
+    </update>
+
+    <update id="updateCommentNum">
+        update article set comment_num=comment_num+1 where uid=#{id};
+    </update>
 
     <select id="getArticle" resultMap="articleRankMap">
         select uid, user_id, name, title, release_time, cover_img,read_num, like_num, comment_num, head_img

@@ -54,6 +54,8 @@ spring:
     nacos:
       discovery:
         server-addr: 192.168.251.128:8848
+  main:
+    allow-circular-references: true
 mybatis-plus:
   mapper-locations: classpath*:/mapper/*.xml
   type-aliases-package: com.rurigokou.back.entity

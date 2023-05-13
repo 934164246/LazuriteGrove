@@ -1,12 +1,20 @@
 package com.rurigokou.front.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.rurigokou.common.dto.RuriPage;
+import com.rurigokou.common.exception.RuriErrorCodeEnum;
 import com.rurigokou.common.exception.RuriException;
+import com.rurigokou.common.pagination.RuriQuery;
+import com.rurigokou.front.dto.ArticleDetailDto;
 import com.rurigokou.front.dto.ArticleDto;
 import com.rurigokou.front.dto.ArticleRankDto;
 import com.rurigokou.front.entity.ArticleContentEntity;
+import com.rurigokou.front.entity.UserEntity;
+import com.rurigokou.front.pagination.ArticlePage;
 import com.rurigokou.front.service.ArticleContentService;
+import com.rurigokou.front.service.UserFollowService;
+import com.rurigokou.front.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +47,12 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, ArticleEntity> i
     @Resource(name = "articleContentService")
     private ArticleContentService articleContentService;
 
+    @Resource(name = "userService")
+    private UserService userService;
+
+    @Resource(name = "userFollowService")
+    private UserFollowService userFollowService;
+
     @Override
     public List<ArticleRankDto> getTop() {
         List<ArticleRankDto> article = articleDao.getArticle();
@@ -62,7 +76,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, ArticleEntity> i
     }
 
     @Override
-    @Transactional
+    @Transactional()
     public Boolean save(ArticleDto dto) {
         boolean isSave=true;
 
@@ -155,6 +169,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, ArticleEntity> i
             dto.setContent(articleContentEntity.getContent());
             dto.setReleaseTime(entity.getReleaseTime());
             dto.setCoverImg(entity.getCoverImg());
+            dto.setAccessMethod(articleContentEntity.getAccessMethod());
             dto.setSourceLink(articleContentEntity.getSourceLink());
         }
 
@@ -173,5 +188,115 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, ArticleEntity> i
         wrapper.eq("status", 1);
 
         return this.count(wrapper);
+    }
+
+    @Override
+    public RuriPage getList(ArticlePage page) {
+        QueryWrapper<ArticleEntity> wrapper=new QueryWrapper<>();
+        wrapper.eq("status", 1);
+
+        IPage<ArticleEntity> entityPage = this.page(RuriQuery.getPage(page), wrapper);
+        Stream<ArticleEntity> articleEntityStream = entityPage.getRecords().stream();
+
+        // 判断排序字段
+        switch (page.getSort()) {
+            case "date": {
+                articleEntityStream=articleEntityStream.sorted(Comparator.comparing(ArticleEntity::getReleaseTime).reversed());
+                break;
+            }
+            case "comment": {
+                articleEntityStream=articleEntityStream.sorted(Comparator.comparingInt(ArticleEntity::getCommentNum).reversed());
+                break;
+            }
+            case "like" : {
+                articleEntityStream=articleEntityStream.sorted(Comparator.comparingInt(ArticleEntity::getLikeNum).reversed());
+                break;
+            }
+            case "read" : {
+                articleEntityStream=articleEntityStream.sorted(Comparator.comparingInt(ArticleEntity::getReadNum).reversed());
+                break;
+            }
+            default: {
+            }
+        }
+
+        // to dto
+        List<Object> collect = articleEntityStream
+                .map(item -> {
+                    UserEntity user = userService.getById(item.getUserId());
+
+                    ArticleDetailDto dto = new ArticleDetailDto();
+                    dto.setId(item.getUid());
+                    dto.setTitle(item.getTitle());
+                    dto.setCoverImg(item.getCoverImg());
+                    dto.setReleaseTime(item.getReleaseTime());
+                    dto.setReadNum(item.getReadNum());
+                    dto.setCommentNum(item.getCommentNum());
+                    dto.setLikeNum(item.getLikeNum());
+                    dto.setUserId(item.getUserId());
+                    dto.setNickname(user.getNickname());
+                    dto.setHeadImg(user.getHeadImg());
+
+                    return dto;
+                })
+                .collect(Collectors.toList());
+
+
+        RuriPage ruriPage = RuriPage.tranToPageVo(entityPage);
+        ruriPage.setList(collect);
+
+        return ruriPage;
+    }
+
+    @Override
+    public ArticleDetailDto getDetail(String id, Integer userId) {
+        QueryWrapper<ArticleEntity> wrapper=new QueryWrapper<>();
+        wrapper.eq("status", 1)
+                .eq("uid", id);
+
+        ArticleEntity articleEntity = this.getOne(wrapper);
+
+        if (articleEntity == null) {
+            throw new RuriException(RuriErrorCodeEnum.UNKNOWN_EXCEPTION);
+        }
+
+        articleDao.updateReadNum(id);
+
+        QueryWrapper<ArticleContentEntity> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("article_id", id);
+
+        ArticleContentEntity articleContentEntity = articleContentService.getOne(queryWrapper);
+        UserEntity user = userService.getById(articleEntity.getUserId());
+
+        ArticleDetailDto dto=new ArticleDetailDto();
+
+        dto.setId(articleEntity.getUid());
+        dto.setUserId(articleEntity.getUserId());
+        dto.setUserFan(user.getFanNum());
+        dto.setIsFollow(userFollowService.checkUserFollow(articleEntity.getUserId(), userId));
+        dto.setArticleNum(articleDao.selectArticleNumByUserId(articleEntity.getUserId()));
+        dto.setNickname(user.getNickname());
+        dto.setHeadImg(user.getHeadImg());
+        dto.setCoverImg(articleEntity.getCoverImg());
+        dto.setTitle(articleEntity.getTitle());
+        dto.setReleaseTime(articleEntity.getReleaseTime());
+        dto.setReadNum(articleEntity.getReadNum());
+        dto.setLikeNum(articleEntity.getLikeNum());
+        dto.setCommentNum(articleEntity.getCommentNum());
+        dto.setContent(articleContentEntity.getContent());
+        dto.setAccessMethod(articleContentEntity.getAccessMethod());
+
+        // 判断此用户是否有获取sourceLink的资格
+        if (userId.equals(articleEntity.getUserId()) || articleContentService.checkUserHasQualification(id, userId)) {
+            dto.setSourceLink(articleContentEntity.getSourceLink());
+        }
+
+
+        return dto;
+    }
+
+    @Override
+    public Boolean articleCommentIncrease(String id) {
+        return articleDao.updateCommentNum(id);
     }
 }

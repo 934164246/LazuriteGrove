@@ -19,7 +19,7 @@ public class KeyValueDto {
         KeyValueDto dto=new KeyValueDto();
 
         dto.setKey(entity.getName());
-        dto.setKey(entity.getValue());
+        dto.setValue(entity.getValue());
 
         return dto;
     }

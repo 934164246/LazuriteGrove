@@ -26,5 +26,9 @@ public interface UserService extends IService<UserEntity> {
     UserInfoDto info(String id);
 
     String register(String email, String password);
+
+    Boolean fanCountIncrease(Integer id, Integer count);
+
+    Boolean followCountChange(Integer id, Integer count);
 }
 
