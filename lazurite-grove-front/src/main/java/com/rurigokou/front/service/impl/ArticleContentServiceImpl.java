@@ -1,5 +1,6 @@
 package com.rurigokou.front.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.rurigokou.common.dto.RuriPage;
 import com.rurigokou.front.entity.ArticleEntity;
@@ -41,8 +42,8 @@ public class ArticleContentServiceImpl extends ServiceImpl<ArticleContentDao, Ar
     }
 
     public boolean checkUserHasQualification(String articleId, Integer userId) {
-        QueryWrapper<ArticleContentEntity> wrapper=new QueryWrapper<>();
-        wrapper.eq("article_id", articleId);
+        LambdaQueryWrapper<ArticleContentEntity> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(ArticleContentEntity::getArticleId, articleId);
 
         ArticleContentEntity entity = this.getOne(wrapper);
 

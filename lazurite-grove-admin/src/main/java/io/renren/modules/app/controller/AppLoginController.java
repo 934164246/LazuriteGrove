@@ -1,8 +1,8 @@
 /**
  * Copyright (c) 2016-2019 人人开源 All rights reserved.
- *
+ * <p>
  * https://www.renren.io
- *
+ * <p>
  * 版权所有，侵权必究！
  */
 
@@ -37,14 +37,14 @@ public class AppLoginController {
     @Autowired
     private UserService userService;
     @Autowired
-    private JwtUtils jwtUtils;
+    private JwtUtils    jwtUtils;
 
     /**
      * 登录
      */
     @PostMapping("login")
     @ApiOperation("登录")
-    public R login(@RequestBody LoginForm form){
+    public R login(@RequestBody LoginForm form) {
         //表单校验
         ValidatorUtils.validateEntity(form);
 

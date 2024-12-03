@@ -27,6 +27,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.rurigokou.front.dao.UserCommentDao;
 import com.rurigokou.front.entity.UserCommentEntity;
 import com.rurigokou.front.service.UserCommentService;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
@@ -91,6 +92,7 @@ public class UserCommentServiceImpl extends ServiceImpl<UserCommentDao, UserComm
     }
 
     @Override
+    @Transactional
     public Boolean saveAsArticle(UserCommentDto dto) {
         ArticleEntity article = articleService.getById(dto.getObjectId());
 

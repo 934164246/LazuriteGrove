@@ -21,4 +21,6 @@ import java.lang.annotation.*;
 @Inherited
 public @interface DataSource {
     String value() default "";
+
+    String desc() default "";
 }

@@ -8,6 +8,7 @@
 
 package io.renren.datasource.properties;
 
+import io.renren.datasource.annotation.DataSource;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.LinkedHashMap;
@@ -20,6 +21,7 @@ import java.util.Map;
  * @since 1.0.0
  */
 @ConfigurationProperties(prefix = "dynamic")
+@DataSource
 public class DynamicDataSourceProperties {
     private Map<String, DataSourceProperties> datasource = new LinkedHashMap<>();
 

@@ -24,7 +24,7 @@ import javax.annotation.Resource;
  * @author gokoururi
  */
 @RestController
-@RequestMapping("front/usermoment")
+@RequestMapping("front/moment")
 public class UserMomentController {
 
     @Resource(name = "userMomentService")
